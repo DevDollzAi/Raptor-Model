@@ -55,6 +55,15 @@ from sovereign_shield.proof_chain import (
     DeterministicReceipt
 )
 
+from sovereign_shield.config import (
+    ShieldConfig,
+    BioHashConfig,
+    BARKConfig,
+    InevitabilityGateConfig,
+    ProofChainConfig,
+    DEFAULT_CONFIG
+)
+
 __all__ = [
     # Core
     "SovereignShield",
@@ -82,4 +91,11 @@ __all__ = [
     "C0Verifier",
     "ZeroEntropyExecutor",
     "DeterministicReceipt",
+    # Configuration
+    "ShieldConfig",
+    "BioHashConfig",
+    "BARKConfig",
+    "InevitabilityGateConfig",
+    "ProofChainConfig",
+    "DEFAULT_CONFIG"
 ]
