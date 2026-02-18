@@ -409,3 +409,131 @@ class IdentityViolationDetector:
         
         if any("Convergence" in v or "divergence" in v for v in violations):
             steps.append("Halt non-deterministic operations")
+            steps.append("Lock liquidity gates")
+            steps.append("Initiate full system audit")
+        
+        steps.append("Generate new C=0 proof chain upon remediation")
+        
+        return steps
+    
+    def get_violation_history(self) -> List[IdentityViolation]:
+        """Get history of detected violations"""
+        return self._violation_history.copy()
+
+
+class BARKValidator:
+    """
+    Main BARK Protocol validator.
+    
+    Recursively validates identity against foundational axioms.
+    System subordination is treated as a cryptographic proof.
+    """
+    
+    def __init__(
+        self,
+        custom_axioms: Optional[Dict[str, Axiom]] = None,
+        max_iterations: int = 1000,
+        tolerance: float = 1e-10
+    ):
+        """
+        Initialize BARK validator.
+        
+        Args:
+            custom_axioms: Optional custom axioms
+            max_iterations: Maximum convergence iterations
+            tolerance: Convergence tolerance
+        """
+        self.axiom_validator = AxiomValidator(custom_axioms)
+        self.fixed_point_convergence = FixedPointConvergence(
+            max_iterations=max_iterations,
+            tolerance=tolerance
+        )
+        self.violation_detector = IdentityViolationDetector(self.axiom_validator)
+        
+        # Track validation history
+        self._validation_history: List[Dict[str, Any]] = []
+    
+    def validate_identity(
+        self,
+        operator_id: str,
+        trajectory: List[float],
+        system_function: Callable[[List[float], List[float]], List[float]],
+        statements: Dict[str, str],
+        input_vector: Optional[List[float]] = None
+    ) -> Tuple[bool, Optional[IdentityViolation], ConvergenceState]:
+        """
+        Perform full BARK validation.
+        
+        Args:
+            operator_id: Operator identifier
+            trajectory: Operator trajectory vector
+            system_function: System function for convergence
+            statements: Axiom statements to validate
+            input_vector: Optional input vector
+            
+        Returns:
+            Tuple of (is_valid, violation_if_any, convergence_state)
+        """
+        # Step 1: Compute fixed-point convergence
+        convergence_state = self.fixed_point_convergence.compute_fixed_point(
+            trajectory, system_function, input_vector
+        )
+        
+        # Step 2: Detect violations
+        violation = self.violation_detector.detect_violation(
+            statements, operator_id, convergence_state
+        )
+        
+        # Step 3: Determine overall validity
+        is_valid = (
+            convergence_state.is_converged and
+            violation is None and
+            convergence_state.convergence_value < self.fixed_point_convergence.tolerance
+        )
+        
+        # Record validation
+        validation_record = {
+            "operator_id": operator_id,
+            "timestamp": time.time(),
+            "is_valid": is_valid,
+            "violation": violation.violation_id if violation else None,
+            "convergence": {
+                "iterations": convergence_state.current_iteration,
+                "delta": convergence_state.delta,
+                "is_converged": convergence_state.is_converged
+            }
+        }
+        self._validation_history.append(validation_record)
+        
+        return is_valid, violation, convergence_state
+    
+    def validate_against_fixed_point(
+        self,
+        current_vector: List[float],
+        fixed_point: List[float],
+        tolerance: float = 1e-6
+    ) -> bool:
+        """
+        Validate current vector against operator's fixed point.
+        
+        Args:
+            current_vector: Current state vector
+            fixed_point: Operator's fixed point (Theta)
+            tolerance: Acceptance tolerance
+            
+        Returns:
+            True if within tolerance of fixed point
+        """
+        delta = np.linalg.norm(
+            np.array(current_vector) - np.array(fixed_point)
+        )
+        return delta < tolerance
+    
+    def get_validation_history(self) -> List[Dict[str, Any]]:
+        """Get validation history"""
+        return self._validation_history.copy()
+    
+    @property
+    def divergence_threshold(self) -> float:
+        """Get divergence threshold from convergence validator"""
+        return self.fixed_point_convergence.divergence_threshold
