@@ -1,5 +1,11 @@
 # Foundations of Sovereign Cognitive Infrastructure: Technical Architecture and the Capability Lattice™
 
+## Foundational Principles
+
+The core philosophy of this project is rooted in the principles of operator sovereignty, cognitive exclusion, and deterministic truth. The foundational logic is established by a singular human anchor, rendering the system's core intelligence non-replicable. This concept is formally defined in the **Non-Copiability Theorem**.
+
+- [Read the Foundational Principles: The Non-Copiability Theorem and The Human Anchor](./0-foundational-principles.md)
+
 ## Executive Summary
 
 This document presents a comprehensive technical architecture for building sovereign cognitive infrastructure that enables operator sovereignty through the integration of knowledge management, deterministic artificial intelligence, and hardware-native virtualization. The Axiom Hive workstation represents a new paradigm in local computational environments, designed to provide an uncompromised environment for functional cognition and economic coordination.
@@ -10,6 +16,8 @@ This document presents a comprehensive technical architecture for building sover
 2. [Implementation Guide](./2-implementation-guide.md)
 3. [Executive Summary](./3-executive-summary.md)
 4. [Appendices](./4-appendices.md)
+5. [Strategic Objectives and MRP for Grossi Intelligence](./5-strategic-objectives-mrp.md)
+6. [MRP: Strategic Objectives and Foundational Disassociation](./6-mrp-foundational-disassociation.md)
 
 ## Key Components
 
