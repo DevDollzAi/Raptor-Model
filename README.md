@@ -109,7 +109,7 @@ print(f"Status: {node.status}")
 ### Configuration
 
 ```python
-from sovereign_shield import ShieldConfig
+from sovereign_shield import ShieldConfig, BioHashConfig, InevitabilityGateConfig
 
 # Use production configuration
 config = ShieldConfig.production()
