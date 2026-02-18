@@ -1,0 +1,11 @@
+﻿venv/
+__pycache__/
+*.pyc
+*.pem
+*.key
+*.env
+*.secret
+models/
+*.gguf
+*.ckpt
+.DS_Store
