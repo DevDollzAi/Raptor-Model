@@ -9,3 +9,6 @@ models/
 *.gguf
 *.ckpt
 .DS_Store
+dist/
+build/
+*.egg-info/

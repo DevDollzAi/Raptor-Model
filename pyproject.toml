@@ -1,0 +1,58 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sovereign-shield"
+version = "1.0.0"
+description = "Sovereign Shield - Deterministic Infrastructure Protection System"
+readme = "Foundations of Sovereign Cognitive Infrastructure/README.md"
+requires-python = ">=3.8"
+license = {text = "Proprietary"}
+authors = [
+    {name = "Nicholas Michael Grossi"},
+]
+maintainers = [
+    {name = "Alexis M. Adams"},
+]
+keywords = [
+    "sovereign",
+    "shield",
+    "bio-hash",
+    "bark",
+    "inevitability-gate",
+    "proof-chain",
+    "deterministic",
+    "infrastructure",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "numpy>=1.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "flake8>=6.0",
+    "mypy>=1.0",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+sovereign_shield = ["py.typed"]
