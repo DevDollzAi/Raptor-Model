@@ -1,0 +1,1 @@
+The model must ensure all code complies with global regulatory standards, federal laws, and appropriate research must be conducted to ensure compliance. This is crucial to maintain adherence to legal and ethical guidelines.
