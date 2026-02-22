@@ -25,7 +25,48 @@ Comprehensive technical documentation is available in the [Foundations of Sovere
 - [Strategic Objectives and MRP](./Foundations%20of%20Sovereign%20Cognitive%20Infrastructure/5-strategic-objectives-mrp.md)
 - [MRP: Foundational Disassociation](./Foundations%20of%20Sovereign%20Cognitive%20Infrastructure/6-mrp-foundational-disassociation.md)
 
-## Installation
+## Chatbot Application
+
+The Raptor Model includes a full **web-based AI chatbot** — the Raptor AI Assistant — that provides an interactive chat interface for learning about and interacting with the Sovereign Shield system.
+
+### Features
+
+- 🌐 **Web UI** — Dark-themed chat interface with sidebar navigation
+- 📚 **25+ Topics** — Covers Bio-Hash, BARK, Inevitability Gate, Proof Chain, AxiomHive, Capability Lattice, and more
+- 💡 **Code examples** — Inline Python code blocks with syntax highlighting
+- 🗂️ **Session management** — Persistent conversation history per session
+- ⚡ **REST API** — JSON API for programmatic access (`/api/chat`, `/api/history`, `/api/clear`, `/api/health`)
+
+### Running the Chatbot
+
+```bash
+# Install dependencies
+pip install -e .
+
+# Launch the chatbot (opens on http://127.0.0.1:5000)
+python chatbot_app.py
+
+# Custom host/port
+python chatbot_app.py --host 0.0.0.0 --port 8080
+
+# Enable debug mode
+python chatbot_app.py --debug
+```
+
+### Chatbot API
+
+```bash
+# Send a message
+curl -X POST http://localhost:5000/api/chat \
+  -H 'Content-Type: application/json' \
+  -d '{"message": "What is the Bio-Hash Protocol?"}'
+
+# Retrieve history
+curl "http://localhost:5000/api/history?session_id=<session_id>"
+
+# Health check
+curl http://localhost:5000/api/health
+```
 
 ### From PyPI (when published)
 

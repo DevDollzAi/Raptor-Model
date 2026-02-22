@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raptor AI — Sovereign Shield Assistant</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <!-- ─────────────────────── Sidebar ─────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">⚔️</span>
+        <span class="logo-text">Raptor AI</span>
+      </div>
+      <p class="logo-sub">Sovereign Shield Assistant</p>
+    </div>
+
+    <nav class="quick-topics">
+      <p class="section-label">Quick Topics</p>
+      <button class="topic-btn" data-msg="What is the Sovereign Shield?">🛡️ Overview</button>
+      <button class="topic-btn" data-msg="Explain the Bio-Hash Protocol">🔐 Bio-Hash</button>
+      <button class="topic-btn" data-msg="How does the BARK Protocol work?">🔍 BARK</button>
+      <button class="topic-btn" data-msg="Tell me about the Inevitability Gate">🚪 Inevitability Gate</button>
+      <button class="topic-btn" data-msg="Explain C=0 Proof Chain">⛓️ Proof Chain</button>
+      <button class="topic-btn" data-msg="Show me a code example">💡 Example</button>
+      <button class="topic-btn" data-msg="How do I install and set up the system?">⚙️ Installation</button>
+      <button class="topic-btn" data-msg="What are the configuration options?">🔧 Configuration</button>
+      <button class="topic-btn" data-msg="Tell me about AxiomHive">🏗️ AxiomHive</button>
+      <button class="topic-btn" data-msg="What is the Capability Lattice?">🗺️ Capability Lattice</button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="clearBtn" class="clear-btn">🗑️ Clear Chat</button>
+      <p class="version-info">v1.0.0 · C=0 Enforced</p>
+    </div>
+  </aside>
+
+  <!-- ─────────────────────── Main Chat ─────────────────────── -->
+  <main class="chat-container">
+    <header class="chat-header">
+      <div class="header-title">
+        <h1>Raptor AI Assistant</h1>
+        <span class="status-badge" id="statusBadge">● Active</span>
+      </div>
+      <p class="header-sub">Deterministic Intelligence · Zero-Entropy Responses</p>
+    </header>
+
+    <div class="messages" id="messages" role="log" aria-live="polite">
+      <!-- Messages injected by JS -->
+    </div>
+
+    <div class="typing-indicator" id="typingIndicator" hidden>
+      <span></span><span></span><span></span>
+    </div>
+
+    <form class="input-area" id="chatForm" autocomplete="off">
+      <textarea
+        id="messageInput"
+        class="message-input"
+        placeholder="Ask about Bio-Hash, BARK, Inevitability Gate, Proof Chain…"
+        rows="1"
+        maxlength="2000"
+        aria-label="Chat message"
+      ></textarea>
+      <button type="submit" class="send-btn" id="sendBtn" aria-label="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+             stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </form>
+  </main>
+
+  <script src="/static/chat.js"></script>
+</body>
+</html>
