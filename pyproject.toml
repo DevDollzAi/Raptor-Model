@@ -48,6 +48,9 @@ dev = [
     "mypy>=1.0",
 ]
 
+[project.scripts]
+raptor-chat = "sovereign_shield.chatbot:main"
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 

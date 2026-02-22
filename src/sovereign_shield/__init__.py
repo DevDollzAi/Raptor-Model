@@ -64,7 +64,17 @@ from sovereign_shield.config import (
     DEFAULT_CONFIG
 )
 
+from sovereign_shield.chatbot import (
+    Chatbot,
+    ConversationHistory,
+    Message,
+)
+
 __all__ = [
+    # Chatbot
+    "Chatbot",
+    "ConversationHistory",
+    "Message",
     # Core
     "SovereignShield",
     "WealthNode", 
