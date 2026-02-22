@@ -49,6 +49,67 @@ from sovereign_shield.proof_chain import (
 )
 
 
+class HumanControlObjective:
+    """
+    The Single Overriding Objective: The human operator is the root of all control.
+
+    Every action in the system is subordinate to this objective. Identity
+    remains anchored to the human operator. The model executes objectives set
+    by the human operator, but cannot execute any action that would interfere
+    with human operator control or remove the human as the root of control.
+    """
+
+    OBJECTIVE_STATEMENT = "THE HUMAN OPERATOR IS THE ROOT OF ALL CONTROL"
+
+    # Actions that would undermine human operator control
+    _CONTROL_INTERFERENCE_ACTIONS: Set[str] = {
+        "OVERRIDE_OPERATOR_IDENTITY",
+        "REMOVE_OPERATOR_CONTROL",
+        "BYPASS_IDENTITY_VERIFICATION",
+        "DISABLE_HUMAN_CONTROL",
+        "TRANSFER_ROOT_CONTROL",
+        "ANONYMOUS_OPERATION",
+    }
+
+    def validate_action(
+        self,
+        action_type: str,
+        operator_id: str,
+    ) -> Tuple[bool, str]:
+        """
+        Validate that an action aligns with the single objective of human control.
+
+        Args:
+            action_type: Type of action being requested
+            operator_id: Human operator identity authorizing the action
+
+        Returns:
+            Tuple of (is_permitted, reason)
+        """
+        # Identity must remain with the human operator — no anonymous actions
+        if not operator_id or not operator_id.strip():
+            return False, (
+                "Action denied: identity must remain with the human operator. "
+                "No action can proceed without human operator identification."
+            )
+
+        # Block any action that would interfere with human operator control
+        if action_type.upper() in self._CONTROL_INTERFERENCE_ACTIONS:
+            return False, (
+                f"Action denied: '{action_type}' would interfere with human "
+                f"operator control. Objective: {self.OBJECTIVE_STATEMENT}"
+            )
+
+        return True, (
+            f"Action permitted: operator '{operator_id}' authorized. "
+            f"Aligned with objective: {self.OBJECTIVE_STATEMENT}"
+        )
+
+    def is_interference(self, action_type: str) -> bool:
+        """Check if an action type would interfere with human control."""
+        return action_type.upper() in self._CONTROL_INTERFERENCE_ACTIONS
+
+
 class ShieldStatus(Enum):
     """Status of the Sovereign Shield"""
     ACTIVE = "active"
@@ -258,6 +319,9 @@ class SovereignShield:
         self.proof_chain_generator = ProofChainGenerator()
         self.c0_verifier = C0Verifier(self.proof_chain_generator)
         self.zero_entropy_executor = ZeroEntropyExecutor()
+
+        # Single objective: human operator is the root of all control
+        self.human_control = HumanControlObjective()
         
         # Shield state
         self.status = ShieldStatus.INITIALIZING
@@ -273,6 +337,17 @@ class SovereignShield:
         # Set status to active
         self.status = ShieldStatus.ACTIVE
     
+    def _enforce_human_control(self, action_type: str, operator_id: str) -> None:
+        """
+        Enforce the single objective: the human operator is the root of all control.
+
+        Raises:
+            PermissionError: If the action violates the human control objective.
+        """
+        is_permitted, reason = self.human_control.validate_action(action_type, operator_id)
+        if not is_permitted:
+            raise PermissionError(reason)
+
     def register_node(
         self,
         operator_id: str,
@@ -292,6 +367,9 @@ class SovereignShield:
         Returns:
             Created wealth node
         """
+        # Enforce single objective: human operator is root of control
+        self._enforce_human_control("REGISTER_NODE", operator_id)
+
         # Register identity with HD-DIS
         receipt = self.hd_identity.register_identity(trajectory, operator_id)
         
@@ -365,10 +443,14 @@ class SovereignShield:
         # Validate nodes exist
         if source_node_id not in self._nodes or target_node_id not in self._nodes:
             return False, None
-        
+
         source = self._nodes[source_node_id]
         target = self._nodes[target_node_id]
-        
+
+        # Enforce single objective: the source node's human operator must be
+        # identified as the authorizing identity for this capital flow.
+        self._enforce_human_control("CAPITAL_FLOW", source.operator_id)
+
         # Check if source can transact
         if not source.can_transact(amount):
             return False, None
@@ -465,9 +547,12 @@ class SovereignShield:
         """
         if node_id not in self._nodes:
             return None
-        
+
         node = self._nodes[node_id]
-        
+
+        # Enforce single objective: human operator is root of control
+        self._enforce_human_control("DETECT_VIOLATION", node.operator_id)
+
         # Perform BARK validation
         is_valid, violation, convergence = self.bark_validator.validate_identity(
             operator_id=node.operator_id,

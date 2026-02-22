@@ -23,7 +23,8 @@ from sovereign_shield.core import (
     SovereignShield,
     WealthNode,
     CapitalFlowVector,
-    ShieldStatus
+    ShieldStatus,
+    HumanControlObjective
 )
 
 from sovereign_shield.bio_hash import (
@@ -67,9 +68,10 @@ from sovereign_shield.config import (
 __all__ = [
     # Core
     "SovereignShield",
-    "WealthNode", 
+    "WealthNode",
     "CapitalFlowVector",
     "ShieldStatus",
+    "HumanControlObjective",
     # Bio-Hash
     "BioHashGenerator",
     "HDIdentitySystem",
