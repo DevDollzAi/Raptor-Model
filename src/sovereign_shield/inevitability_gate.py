@@ -255,7 +255,7 @@ class RegistrationExecutor(StageExecutor):
         # Create intent hash
         intent_data = json.dumps(context["parameters"], sort_keys=True)
         intent_hash = hashlib.sha3_256(
-            intent_data + context["operator_id"]
+            (intent_data + context["operator_id"]).encode()
         ).hexdigest()
         
         registration = IntentRegistration(
