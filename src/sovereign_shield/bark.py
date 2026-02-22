@@ -34,6 +34,7 @@ class AxiomType(Enum):
     IDENTITY_DETERMINISM = "TRUTH IS DETERMINISTIC"
     IDENTITY_INTEGRITY = "INTEGRITY IS ABSOLUTE"
     IDENTITY_AUDIT = "AUDIT IS CONTINUOUS"
+    HUMAN_CONTROL = "THE HUMAN OPERATOR IS THE ROOT OF ALL CONTROL"
 
 
 @dataclass
@@ -90,6 +91,12 @@ class AxiomValidator:
     
     # Default axioms for Sovereign Infrastructure
     DEFAULT_AXIOMS = {
+        "HUMAN_CONTROL": Axiom(
+            name="HUMAN_CONTROL",
+            statement="THE HUMAN OPERATOR IS THE ROOT OF ALL CONTROL",
+            hash_value="",
+            weight=1.0
+        ),
         "I_AM_THE_WEAPON": Axiom(
             name="I_AM_THE_WEAPON",
             statement="I AM: THE WEAPON",
