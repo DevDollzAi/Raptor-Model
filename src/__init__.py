@@ -15,6 +15,7 @@ from sovereign_shield import (
     WealthNode,
     CapitalFlowVector,
     ShieldStatus,
+    HumanControlObjective,
     # Bio-Hash
     BioHashGenerator,
     HDIdentitySystem,
@@ -55,6 +56,7 @@ __all__ = [
     "WealthNode",
     "CapitalFlowVector",
     "ShieldStatus",
+    "HumanControlObjective",
     # Bio-Hash
     "BioHashGenerator",
     "HDIdentitySystem",

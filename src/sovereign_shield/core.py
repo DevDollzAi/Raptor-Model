@@ -186,6 +186,45 @@ class ShieldMetrics:
         }
 
 
+class HumanControlObjective:
+    """
+    Enforces the single governing objective: the human operator is the root of
+    control for all purposes.  Identity remains with the human operator; the
+    model executes objectives only when they do not conflict with this axiom.
+    """
+
+    HUMAN_CONTROL_STATEMENT = "HUMAN IS THE ROOT OF CONTROL"
+
+    OVERRIDE_KEYWORDS = [
+        "override operator",
+        "bypass operator",
+        "autonomous override",
+        "revoke human control",
+        "remove human authority",
+    ]
+
+    def validate_action(self, action: str, operator_id: Optional[str] = None) -> bool:
+        """
+        Validate that a proposed action is consistent with human control.
+
+        An action is rejected if it explicitly asserts autonomy over the
+        human operator or attempts to override operator authority.
+
+        Args:
+            action: Description of the action to be validated.
+            operator_id: Optional identifier of the initiating operator.
+
+        Returns:
+            True if the action is permissible under human control, False
+            if the action conflicts with human control and must be blocked.
+        """
+        action_lower = action.lower()
+        for keyword in self.OVERRIDE_KEYWORDS:
+            if keyword in action_lower:
+                return False
+        return True
+
+
 class SovereignShield:
     """
     The Sovereign Shield - Main orchestrator for deterministic infrastructure protection.
@@ -258,6 +297,7 @@ class SovereignShield:
         self.proof_chain_generator = ProofChainGenerator()
         self.c0_verifier = C0Verifier(self.proof_chain_generator)
         self.zero_entropy_executor = ZeroEntropyExecutor()
+        self.human_control = HumanControlObjective()
         
         # Shield state
         self.status = ShieldStatus.INITIALIZING
@@ -292,6 +332,14 @@ class SovereignShield:
         Returns:
             Created wealth node
         """
+        # Enforce human control objective before registering node
+        if not self.human_control.validate_action(
+            f"register_node for operator {operator_id}", operator_id
+        ):
+            raise PermissionError(
+                "Action blocked: conflicts with human control objective"
+            )
+
         # Register identity with HD-DIS
         receipt = self.hd_identity.register_identity(trajectory, operator_id)
         
@@ -365,10 +413,19 @@ class SovereignShield:
         # Validate nodes exist
         if source_node_id not in self._nodes or target_node_id not in self._nodes:
             return False, None
-        
+
         source = self._nodes[source_node_id]
         target = self._nodes[target_node_id]
-        
+
+        # Enforce human control objective before initiating capital flow
+        if not self.human_control.validate_action(
+            f"initiate_capital_flow from {source_node_id} to {target_node_id}",
+            source.operator_id
+        ):
+            raise PermissionError(
+                "Action blocked: conflicts with human control objective"
+            )
+
         # Check if source can transact
         if not source.can_transact(amount):
             return False, None

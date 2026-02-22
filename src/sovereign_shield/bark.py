@@ -34,6 +34,7 @@ class AxiomType(Enum):
     IDENTITY_DETERMINISM = "TRUTH IS DETERMINISTIC"
     IDENTITY_INTEGRITY = "INTEGRITY IS ABSOLUTE"
     IDENTITY_AUDIT = "AUDIT IS CONTINUOUS"
+    HUMAN_CONTROL = "HUMAN IS THE ROOT OF CONTROL"
 
 
 @dataclass
@@ -119,6 +120,12 @@ class AxiomValidator:
             statement="AUDIT IS CONTINUOUS",
             hash_value="",
             weight=0.8
+        ),
+        "HUMAN_CONTROL": Axiom(
+            name="HUMAN_CONTROL",
+            statement="HUMAN IS THE ROOT OF CONTROL",
+            hash_value="",
+            weight=1.0
         )
     }
     
