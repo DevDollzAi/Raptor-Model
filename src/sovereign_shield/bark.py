@@ -329,14 +329,16 @@ class IdentityViolationDetector:
     Detects identity violations and triggers remediation protocols.
     """
     
-    def __init__(self, axiom_validator: AxiomValidator):
+    def __init__(self, axiom_validator: AxiomValidator, divergence_threshold: float = 1e6):
         """
         Initialize violation detector.
         
         Args:
             axiom_validator: Axiom validator instance
+            divergence_threshold: Threshold for detecting potential divergence
         """
         self.axiom_validator = axiom_validator
+        self.divergence_threshold = divergence_threshold
         self._violation_history: List[IdentityViolation] = []
     
     def detect_violation(
@@ -448,7 +450,10 @@ class BARKValidator:
             max_iterations=max_iterations,
             tolerance=tolerance
         )
-        self.violation_detector = IdentityViolationDetector(self.axiom_validator)
+        self.violation_detector = IdentityViolationDetector(
+            self.axiom_validator,
+            divergence_threshold=self.fixed_point_convergence.divergence_threshold
+        )
         
         # Track validation history
         self._validation_history: List[Dict[str, Any]] = []
